@@ -38,17 +38,18 @@ def csrf_validation(event):
 
         apex.no_csrf = routename1:routename2
 
-        Disabled apex CSRF (20121118) - CSRF token not being passed 
+        Disabled apex CSRF (20121118) - CSRF token not being passed
         through new Velruse
 
     """
+    #import pdb; pdb.set_trace()
     if event.request.method == 'POST':
         # will never hit GET
         token = event.request.POST.get('csrf_token') \
             or event.request.GET.get('csrf_token') \
-            or event.request.json_body.get('csrf_token') \
+    #       or event.request.json_body.get('csrf_token') \
             or event.request.headers.get('X-CSRF-Token')
-                                    
+
         no_csrf = apex_settings('no_csrf', '').split(',')
         if (token is None or token != event.request.session.get_csrf_token()):
             if event.request.matched_route and \
